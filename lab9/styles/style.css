@@ -1,0 +1,134 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.layout {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.layout tr td {
+    padding: 30px;
+    vertical-align: top;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: none;
+}
+
+.sidebar {
+    background-color: #fafbfc;
+    border-left: 1px solid #edf2f7;
+    width: 280px;
+}
+
+.sidebarHeader {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #4a5568;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 12px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #4a5568;
+    transition: all 0.2s;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #667eea;
+    color: white;
+    transform: translateX(5px);
+}
+
+.footer {
+    background-color: #2d3748;
+    color: #cbd5e0;
+    text-align: center;
+    padding: 20px !important;
+    font-size: 14px;
+}
+
+h2 {
+    color: #2d3748;
+    margin-top: 0;
+}
+
+p {
+    line-height: 1.6;
+    color: #4a5568;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #edf2f7;
+    margin: 25px 0;
+}
+
+a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* For forms in later labs */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+input[type="submit"], button {
+    background-color: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #5a67d8;
+}
