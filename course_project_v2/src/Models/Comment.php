@@ -8,48 +8,42 @@ class Comment
 {
     public static function all()
     {
-        return Db::load('comments');
+        return Db::getInstance()->query("SELECT * FROM comments");
     }
 
     public static function getByArticle($articleId)
     {
-        $all = self::all();
-        return array_filter($all, fn($c) => $c['article_id'] == $articleId);
+        return Db::getInstance()->query("SELECT * FROM comments WHERE article_id = :article_id", ['article_id' => $articleId]);
     }
 
     public static function find($id)
     {
-        foreach (self::all() as $c) {
-            if ($c['id'] == $id) return $c;
-        }
-        return null;
+        $result = Db::getInstance()->query("SELECT * FROM comments WHERE id = :id", ['id' => $id]);
+        return $result ? $result[0] : null;
     }
 
     public static function add($data)
     {
-        $comments = self::all();
-        $id = count($comments) > 0 ? max(array_column($comments, 'id')) + 1 : 1;
-        $newComment = [
-            'id' => $id,
-            'article_id' => $data['article_id'],
-            'author_id' => $data['author_id'],
-            'text' => $data['text'],
-            'date' => date('Y-m-d H:i:s')
-        ];
-        $comments[] = $newComment;
-        Db::save('comments', $comments);
-        return $id;
+        Db::getInstance()->execute(
+            "INSERT INTO comments (article_id, author_id, text, date) VALUES (:article_id, :author_id, :text, :date)",
+            [
+                'article_id' => $data['article_id'],
+                'author_id' => $data['author_id'],
+                'text' => $data['text'],
+                'date' => date('Y-m-d H:i:s')
+            ]
+        );
+        return Db::getInstance()->getLastInsertId();
     }
 
     public static function update($id, $text)
     {
-        $comments = self::all();
-        foreach ($comments as &$c) {
-            if ($c['id'] == $id) {
-                $c['text'] = $text;
-                break;
-            }
-        }
-        Db::save('comments', $comments);
+        Db::getInstance()->execute(
+            "UPDATE comments SET text = :text WHERE id = :id",
+            [
+                'id' => $id,
+                'text' => $text
+            ]
+        );
     }
 }

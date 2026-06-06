@@ -8,28 +8,24 @@ class Article
 {
     public static function all()
     {
-        return Db::load('articles');
+        return Db::getInstance()->query("SELECT * FROM articles");
     }
 
     public static function find($id)
     {
-        $articles = self::all();
-        foreach ($articles as $a) {
-            if ($a['id'] == $id) return $a;
-        }
-        return null;
+        $result = Db::getInstance()->query("SELECT * FROM articles WHERE id = :id", ['id' => $id]);
+        return $result ? $result[0] : null;
     }
 
     public static function update($id, $data)
     {
-        $articles = self::all();
-        foreach ($articles as &$a) {
-            if ($a['id'] == $id) {
-                $a['title'] = $data['title'];
-                $a['text'] = $data['text'];
-                break;
-            }
-        }
-        Db::save('articles', $articles);
+        Db::getInstance()->execute(
+            "UPDATE articles SET title = :title, text = :text WHERE id = :id",
+            [
+                'id' => $id,
+                'title' => $data['title'],
+                'text' => $data['text']
+            ]
+        );
     }
 }

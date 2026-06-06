@@ -8,9 +8,7 @@ class User
 {
     public static function find($id)
     {
-        foreach (Db::load('users') as $u) {
-            if ($u['id'] == $id) return $u;
-        }
-        return ['id' => 0, 'nickname' => 'Аноним'];
+        $result = Db::getInstance()->query("SELECT * FROM users WHERE id = :id", ['id' => $id]);
+        return $result ? $result[0] : ['id' => 0, 'nickname' => 'Аноним'];
     }
 }

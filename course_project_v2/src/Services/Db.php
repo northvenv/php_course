@@ -2,23 +2,49 @@
 
 namespace Services;
 
+use PDO;
+use PDOException;
+
 class Db
 {
-    private static function getFilePath($name)
+    private static $instance;
+    private $pdo;
+
+    private function __construct()
     {
-        return __DIR__ . '/../../data/' . $name . '.json';
+        $dbPath = __DIR__ . '/../../data/database.sqlite';
+        try {
+            $this->pdo = new PDO('sqlite:' . $dbPath);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die('Database connection failed: ' . $e->getMessage());
+        }
     }
 
-    public static function load($name)
+    public static function getInstance()
     {
-        $path = self::getFilePath($name);
-        if (!file_exists($path)) return [];
-        return json_decode(file_get_contents($path), true);
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public static function save($name, $data)
+    public function query(string $sql, array $params = [])
     {
-        $path = self::getFilePath($name);
-        file_put_contents($path, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        $sth = $this->pdo->prepare($sql);
+        $sth->execute($params);
+        return $sth->fetchAll();
+    }
+
+    public function execute(string $sql, array $params = [])
+    {
+        $sth = $this->pdo->prepare($sql);
+        return $sth->execute($params);
+    }
+
+    public function getLastInsertId()
+    {
+        return $this->pdo->lastInsertId();
     }
 }
